@@ -1,0 +1,27 @@
+apiVersion: "extensions/v1beta1"
+kind: Deployment
+metadata:
+  name: issue-bot
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: issue-bot-app
+    spec:
+      containers:
+      - name: issue-bot
+        image: nagi1290/github-slack-bot-k8s:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: issue-bot
+              key: GITHUB_TOKEN
+        - name: SLACK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: issue-bot
+              key: SLACK_TOKEN
